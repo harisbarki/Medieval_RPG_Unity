@@ -11,9 +11,8 @@ public class PlayerMovement : MonoBehaviour
     ThirdPersonCharacter m_Character;   // A reference to the ThirdPersonCharacter on the object
     CameraRaycaster cameraRaycaster;
     Vector3 currentClickTarget;
-    Boolean mouseClicked;
 
-    bool isInDirectMode = false;    // TODO consider making static later
+    bool isInDirectMode = false;
 
     private void Start()
     {
@@ -22,8 +21,6 @@ public class PlayerMovement : MonoBehaviour
         currentClickTarget = transform.position;
     }
 
-    // TODO fix issue with click to move and WSAD conflicting and increasing speed
-
     // Fixed update is called in sync with physics
     private void FixedUpdate()
     {
@@ -31,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))    // G for gamepad. 
         {
             isInDirectMode = !isInDirectMode;   // Toggle mode
+            currentClickTarget = transform.position;    // clear the click target
         }
 
         if (isInDirectMode)
