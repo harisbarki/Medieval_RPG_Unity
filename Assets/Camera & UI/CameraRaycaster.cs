@@ -22,8 +22,8 @@ public class CameraRaycaster : MonoBehaviour
         get { return layerHit; }
     }
 
-    public delegate void OnLayerChange(Layer currentLayerHit);   // declare new delegate type
-    public OnLayerChange layerChangeObservers;  // instantiate an observer set
+    public delegate void OnLayerChange(Layer newLayer);   // declare new delegate type
+    public event OnLayerChange onLayerChange;  // instantiate an observer set
 
     void Start()
     {
@@ -39,10 +39,10 @@ public class CameraRaycaster : MonoBehaviour
             if (hit.HasValue)
             {
                 raycastHit = hit.Value;
-                if(layerHit != layer)   // If layer has changed
+                if (layerHit != layer)   // If layer has changed
                 {
                     layerHit = layer;
-                    layerChangeObservers(layerHit); // Call the delegates 
+                    onLayerChange(layer); // Call the delegates 
                 }
                 layerHit = layer;
                 return;
@@ -67,4 +67,6 @@ public class CameraRaycaster : MonoBehaviour
         }
         return null;
     }
+
+    // TODO consider de-registering OnLayerChanged on leaving all game scenes
 }
