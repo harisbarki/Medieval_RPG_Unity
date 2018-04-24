@@ -7,10 +7,12 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float walkMoveStopRadius = 0.2f;
+    [SerializeField] float attackMoveStopRadius = 5f;
 
     ThirdPersonCharacter thirdPersonCharacter;   // A reference to the ThirdPersonCharacter on the object
     CameraRaycaster cameraRaycaster;
-    Vector3 currentClickTarget;
+    Vector3 currentDestination;
+    Vector3 clickPoint;
 
     bool isInDirectMode = false;
 
@@ -18,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
-        currentClickTarget = transform.position;
+        currentDestination = transform.position;
     }
 
     // Fixed update is called in sync with physics
@@ -28,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))    // G for gamepad. 
         {
             isInDirectMode = !isInDirectMode;   // Toggle mode
-            currentClickTarget = transform.position;    // clear the click target
+            currentDestination = transform.position;    // clear the click target
         }
 
         if (isInDirectMode)
@@ -59,13 +61,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
+            clickPoint = cameraRaycaster.hit.point;
             switch (cameraRaycaster.currentLayerHit)
             {
                 case Layer.Walkable:
-                    currentClickTarget = cameraRaycaster.hit.point;
+                    currentDestination = ShortDestination(clickPoint, walkMoveStopRadius);
                     break;
                 case Layer.Enemy:
-                    print("Not moving to Enemy");
+                    currentDestination = ShortDestination(clickPoint, attackMoveStopRadius);
                     break;
                 default:
                     print("Unexpected layer found!");
@@ -73,9 +76,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        var playerToClickPoint = currentClickTarget - transform.position;
+        WalkToDestination();
+    }
 
-        if (playerToClickPoint.magnitude >= walkMoveStopRadius)
+    private void WalkToDestination()
+    {
+        var playerToClickPoint = currentDestination - transform.position;
+
+        if (playerToClickPoint.magnitude >= 0)
         {
             thirdPersonCharacter.Move(playerToClickPoint, false, false);
         }
@@ -83,6 +91,25 @@ public class PlayerMovement : MonoBehaviour
         {
             thirdPersonCharacter.Move(Vector3.zero, false, false);
         }
+    }
+
+    Vector3 ShortDestination(Vector3 destination, float shortening)
+    {
+        Vector3 reductionVector = (destination - transform.position).normalized * shortening;
+        return destination - reductionVector;
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Draw movement gizmos
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(transform.position, clickPoint);
+        Gizmos.DrawSphere(currentDestination, 0.1f);
+        Gizmos.DrawSphere(clickPoint, 0.1f);
+
+        // Draw attack sphere
+        Gizmos.color = new Color(255f, 9f, 9, 0.5f);
+        Gizmos.DrawWireSphere(transform.position, attackMoveStopRadius);
     }
 }
 
