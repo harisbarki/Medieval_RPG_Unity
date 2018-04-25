@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
 
     [SerializeField] float maxHealthPoints = 100f;
@@ -16,15 +16,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Use this for initialization
-    void Start()
+    public void TakeDamage(float damage)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
     }
 }
