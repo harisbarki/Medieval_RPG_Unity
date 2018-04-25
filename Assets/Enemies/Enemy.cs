@@ -7,9 +7,16 @@ public class Enemy : MonoBehaviour, IDamageable
 {
 
     [SerializeField] float maxHealthPoints = 100f;
-    [SerializeField] float attackRadius = 4f;
     [SerializeField] float chaseRadius = 6f;
 
+    [SerializeField] float attackRadius = 4f;
+    [SerializeField] float damagePerShot = 9f;
+    [SerializeField] float secondsBetweenShots = 1f;
+
+    [SerializeField] GameObject projectileToUse; 
+    [SerializeField] GameObject projectileSocket; 
+
+    bool isAttacking = false;
     float currentHealthPoints = 100f;
     AICharacterControl aiCharacterControl = null;
     GameObject player = null;
@@ -27,6 +34,23 @@ public class Enemy : MonoBehaviour, IDamageable
         currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
     }
 
+    void SpawnProjectile()
+    {
+        GameObject newProjectile = Instantiate(projectileToUse, projectileSocket.transform.position, Quaternion.identity);
+        Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
+        projectileComponent.SetDamage(damagePerShot);
+        Vector3 unitVectorToPlayer = (player.transform.position - projectileSocket.transform.position).normalized;
+
+        float projectileSpeed = projectileComponent.projectileSpeed;
+        newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * projectileSpeed;
+    }
+
+    IEnumerator ResetIsAttacking()
+    {
+        yield return new WaitForSeconds(secondsBetweenShots);
+        isAttacking = false;
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -38,10 +62,11 @@ public class Enemy : MonoBehaviour, IDamageable
     void Update()
     {
         float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-        if (distanceToPlayer <= attackRadius)
+        if (distanceToPlayer <= attackRadius && !isAttacking)
         {
-            print(gameObject.name + " attacking player");
-            // TODO attack player
+            isAttacking = true;
+            StartCoroutine(ResetIsAttacking());
+            SpawnProjectile();
         }
 
         if (distanceToPlayer <= chaseRadius)

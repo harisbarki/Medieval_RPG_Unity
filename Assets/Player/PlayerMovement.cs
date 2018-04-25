@@ -19,8 +19,6 @@ public class PlayerMovement : MonoBehaviour
     AICharacterControl aiCharacterControl = null;
     GameObject walkTarget = null;
 
-    bool isInDirectMode = false;
-
     void Start()
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
