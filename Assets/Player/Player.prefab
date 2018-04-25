@@ -658,7 +658,10 @@ GameObject:
   - component: {fileID: 5426510}
   - component: {fileID: 13615390}
   - component: {fileID: 11469404}
+  - component: {fileID: 195060352295567126}
+  - component: {fileID: 114108371834883472}
   - component: {fileID: 114451869822858392}
+  - component: {fileID: 114647579018746088}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2491,8 +2494,8 @@ MonoBehaviour:
   m_JumpPower: 6
   m_GravityMultiplier: 2
   m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 1.27
-  m_AnimSpeedMultiplier: 2.12
+  m_MoveSpeedMultiplier: 0.83
+  m_AnimSpeedMultiplier: 1.73
   m_GroundCheckDistance: 0.3
 --- !u!136 &13615390
 CapsuleCollider:
@@ -2702,6 +2705,18 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 149790}
   m_IsPrefabAsset: 1
+--- !u!114 &114108371834883472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!114 &114451869822858392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2713,4 +2728,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084806ce73b63fc408f71793b929cc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkMoveStopRadius: 0.2
+--- !u!114 &114647579018746088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e716e0a65c38d40bf59fb97db5cb1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 100
+--- !u!195 &195060352295567126
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 1
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
