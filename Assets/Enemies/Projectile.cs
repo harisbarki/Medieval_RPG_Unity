@@ -20,8 +20,9 @@ public class Projectile : MonoBehaviour
         if (damageableComponent)
         {
             (damageableComponent as IDamageable).TakeDamage(damageCaused);
-            Destroy(gameObject);
         }
 
+        // clean up
+        Destroy(gameObject);
     }
 }
