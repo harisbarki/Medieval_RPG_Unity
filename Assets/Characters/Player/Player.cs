@@ -2,63 +2,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IDamageable
-{
+public class Player : MonoBehaviour, IDamageable {
 
-    [SerializeField] int enemyLayer = 10;
+    [SerializeField] int enemyLayer = 9;
     [SerializeField] float maxHealthPoints = 100f;
     [SerializeField] float damagePerHit = 10f;
-    [SerializeField] float minTimeBetweenHits = 0.5f;
+    [SerializeField] float minTimeBetweenHits = .5f;
     [SerializeField] float maxAttackRange = 2f;
 
     GameObject currentTarget;
-    CameraRaycaster cameraRaycaster;
     float currentHealthPoints;
-    bool canAttack = true;
+    CameraRaycaster cameraRaycaster;
+    float lastHitTime = 0f;
 
-    public float healthAsPercentage
+    public float healthAsPercentage { get { return currentHealthPoints / maxHealthPoints; }}
+
+    void Start()
     {
-        get
+        cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+        cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+        currentHealthPoints = maxHealthPoints;
+    }
+
+    void OnMouseClick(RaycastHit raycastHit, int layerHit)
+    {
+        if (layerHit == enemyLayer)
         {
-            return currentHealthPoints / maxHealthPoints;
+            var enemy = raycastHit.collider.gameObject;
+             
+            // Check enemy is in range
+            if ((enemy.transform.position - transform.position).magnitude > maxAttackRange)
+            {
+                return;
+            }
+
+            currentTarget = enemy;
+
+            var enemyComponent = enemy.GetComponent<Enemy>();
+            if (Time.time - lastHitTime > minTimeBetweenHits)
+            {
+                enemyComponent.TakeDamage(damagePerHit);
+                lastHitTime = Time.time;
+            }
         }
     }
 
     public void TakeDamage(float damage)
     {
         currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-    }
-
-    void Start()
-    {
-        cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-        cameraRaycaster.notifyMouseClickObservers += OnMouseClicked;
-        currentHealthPoints = maxHealthPoints;
-    }
-
-    void OnMouseClicked(RaycastHit raycastHit, int layerHit)
-    {
-        if(layerHit == enemyLayer && canAttack)
-        {
-            canAttack = false;
-            StartCoroutine(ResetCanAttack());
-            GameObject enemy = raycastHit.collider.gameObject;
-
-            // Check enemy is in range
-            if((transform.position - enemy.transform.position).magnitude >= maxAttackRange)
-            {
-                return;
-            }
-
-            currentTarget = enemy;
-            Enemy enemyComponent = currentTarget.GetComponent<Enemy>();
-            enemyComponent.TakeDamage(damagePerHit);
-        }
-    }
-
-    IEnumerator ResetCanAttack()
-    {
-        yield return new WaitForSeconds(minTimeBetweenHits);
-        canAttack = true;
     }
 }
