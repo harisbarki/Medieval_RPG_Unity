@@ -19,7 +19,8 @@ namespace RPG.Characters
         [SerializeField] float minTimeBetweenHits = .5f;
         [SerializeField] float maxAttackRange = 2f;
 
-        [SerializeField] Weapon weaponInUse;
+        [SerializeField] AnimatorOverrideController animatorOverrideController; 
+        [SerializeField] Weapon weaponInUse; 
 
         float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
@@ -30,8 +31,21 @@ namespace RPG.Characters
         void Start()
         {
             RegisterForMouseClick();
-            currentHealthPoints = maxHealthPoints;
+            SetCurrentMaxHealth();
             PutWeaponInHand();
+            OverrideAnimatorController();
+        }
+
+        private void SetCurrentMaxHealth()
+        {
+            currentHealthPoints = maxHealthPoints;
+        }
+
+        private void OverrideAnimatorController()
+        {
+            Animator animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = animatorOverrideController;
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimationClip();
         }
 
         private void PutWeaponInHand()
