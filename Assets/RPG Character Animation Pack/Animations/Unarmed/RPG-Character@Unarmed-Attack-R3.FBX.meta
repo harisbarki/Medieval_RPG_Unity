@@ -58,7 +58,6 @@ ModelImporter:
     100104: Motion
     100106: RPG-Character-Mesh
     100108: //RootNode
-    100110: Exporter
     400000: B_Head
     400002: B_L_Calf
     400004: B_L_Clavicle
@@ -114,7 +113,6 @@ ModelImporter:
     400104: Motion
     400106: RPG-Character-Mesh
     400108: //RootNode
-    400110: Exporter
     4300000: RPG-Character-Mesh
     7400000: Unarmed-Attack-R3
     9500000: //RootNode
@@ -185,7 +183,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.3974684
+      - time: 0.43291605
         functionName: Hit
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -195,8 +193,6 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Exporter
-        weight: 0
       - path: Motion
         weight: 1
       - path: Motion/B_Pelvis
@@ -302,6 +298,8 @@ ModelImporter:
       - path: Motion/B_Pelvis/B_Spine/B_Spine1/B_Spine2/B_R_Clavicle/B_R_UpperArm/B_R_Forearm/B_R_Hand/B_R_Finger4/B_R_Finger41
         weight: 1
       - path: Motion/B_Pelvis/B_Spine/B_Spine1/B_Spine2/B_R_Clavicle/B_R_UpperArm/B_R_Forearm/B_R_Hand/B_R_Finger4/B_R_Finger41/B_R_Finger42
+        weight: 1
+      - path: RPG-Character-Mesh
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}

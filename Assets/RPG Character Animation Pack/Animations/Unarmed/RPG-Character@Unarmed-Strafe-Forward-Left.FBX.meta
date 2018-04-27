@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a8cc0877fd21579428ec63fb9911aa63
+guid: 443693849a2f4e741afac059a470e10e
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -107,9 +107,8 @@ ModelImporter:
     100202: B_Spine2
     100204: Motion
     100206: RPG-Character-Mesh
-    100208: Exporter
-    100210: Tape001
-    100212: Tape001.Target
+    100208: Tape001
+    100210: Tape001.Target
     400000: B_L_Hand
     400002: B_L_Forearm
     400004: B_L_UpperArm
@@ -214,9 +213,8 @@ ModelImporter:
     400202: B_Spine2
     400204: Motion
     400206: RPG-Character-Mesh
-    400208: Exporter
-    400210: Tape001
-    400212: Tape001.Target
+    400208: Tape001
+    400210: Tape001.Target
     2300000: Mesh_Soldier_A
     2300002: AK47
     2300004: Chaingun
@@ -306,15 +304,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: FootL
+      - time: 0.51649475
+        functionName: FootR
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.51181436
-        functionName: FootR
+      - time: 0
+        functionName: FootL
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

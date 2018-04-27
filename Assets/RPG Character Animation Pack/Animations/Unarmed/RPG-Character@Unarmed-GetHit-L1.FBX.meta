@@ -107,10 +107,6 @@ ModelImporter:
     100202: B_Spine2
     100204: Motion
     100206: RPG-Character-Mesh
-    100208: Exporter
-    100210: Shield
-    100212: WeaponL
-    100214: WeaponR
     400000: //RootNode
     400002: B_L_Thigh
     400004: B_Head
@@ -215,24 +211,14 @@ ModelImporter:
     400202: B_Spine2
     400204: Motion
     400206: RPG-Character-Mesh
-    400208: Exporter
-    400210: Shield
-    400212: WeaponL
-    400214: WeaponR
     2300000: AK47
     2300002: Chaingun
     2300004: MissileLauncher
     2300006: USP
-    2300008: Shield
-    2300010: WeaponL
-    2300012: WeaponR
     3300000: AK47
     3300002: Chaingun
     3300004: MissileLauncher
     3300006: USP
-    3300008: Shield
-    3300010: WeaponL
-    3300012: WeaponR
     4300000: Mesh_Soldier_A
     4300002: AK47
     4300004: MissileLauncher
@@ -240,9 +226,6 @@ ModelImporter:
     4300008: Chaingun
     4300010: Soldier_Mesh
     4300012: RPG-Character-Mesh
-    4300014: Shield
-    4300016: WeaponR
-    4300018: WeaponL
     7400000: Unarmed-GetHit-L1
     9500000: //RootNode
     11100000: //RootNode
@@ -308,8 +291,6 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: Exporter
-        weight: 0
       - path: Motion
         weight: 1
       - path: Motion/B_Pelvis
@@ -416,12 +397,8 @@ ModelImporter:
         weight: 1
       - path: Motion/B_Pelvis/B_Spine/B_Spine1/B_Spine2/B_R_Clavicle/B_R_UpperArm/B_R_Forearm/B_R_Hand/B_R_Finger4/B_R_Finger41/B_R_Finger42
         weight: 1
-      - path: Shield
-        weight: 0
-      - path: WeaponL
-        weight: 0
-      - path: WeaponR
-        weight: 0
+      - path: RPG-Character-Mesh
+        weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0

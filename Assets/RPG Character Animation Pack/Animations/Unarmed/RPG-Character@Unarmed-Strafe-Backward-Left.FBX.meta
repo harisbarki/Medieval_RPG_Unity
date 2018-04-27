@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d561a28c094f3f7499e0e445eedbaae5
+guid: 38d950ecf8ee061498d6479837d21d77
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -107,9 +107,8 @@ ModelImporter:
     100202: B_Spine2
     100204: Motion
     100206: RPG-Character-Mesh
-    100208: Exporter
-    100210: Tape001
-    100212: Tape001.Target
+    100208: Tape001
+    100210: Tape001.Target
     400000: B_L_Hand
     400002: B_L_Forearm
     400004: B_L_UpperArm
@@ -214,9 +213,8 @@ ModelImporter:
     400202: B_Spine2
     400204: Motion
     400206: RPG-Character-Mesh
-    400208: Exporter
-    400210: Tape001
-    400212: Tape001.Target
+    400208: Tape001
+    400210: Tape001.Target
     2300000: Mesh_Soldier_A
     2300002: AK47
     2300004: Chaingun
@@ -270,7 +268,7 @@ ModelImporter:
       position error 19.9 mm at time 0:13 (54.2%) Frame 13\n\tRightHand average position
       error 10.7 mm and maximum position error 17.2 mm at time 0:12 (50.0%) Frame
       12\n\tHead average position error 7.6 mm and maximum position error 11.0 mm
-      at time 0:24 (100.0%) Frame 24\n"
+      at time 0: 0 (0.0%) Frame 0\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -313,7 +311,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.49092826
+      - time: 0.44616
         functionName: FootL
         data: 
         objectReferenceParameter: {instanceID: 0}
