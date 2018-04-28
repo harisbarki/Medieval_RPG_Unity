@@ -810,7 +810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e982ff127e897de42b828b78cdf9ce50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBar: {fileID: 0}
+  energyOrb: {fileID: 0}
   maxEnergyPoints: 100
   regenPointsPerSecond: 10
 --- !u!114 &114272382486777280

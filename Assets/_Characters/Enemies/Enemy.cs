@@ -14,7 +14,8 @@ namespace RPG.Characters
 
         [SerializeField] float attackRadius = 4f;
         [SerializeField] float damagePerShot = 9f;
-        [SerializeField] float secondsBetweenShots = 0.5f;
+        [SerializeField] float firingPeriodInSeconds = 0.5f;
+        [SerializeField] float firingPeriodVariation = 0.1f;
         [SerializeField] GameObject projectileToUse;
         [SerializeField] GameObject projectileSocket;
         [SerializeField] Vector3 aimOffset = new Vector3(0, 1f, 0);
@@ -51,7 +52,8 @@ namespace RPG.Characters
             if (distanceToPlayer <= attackRadius && !isAttacking)
             {
                 isAttacking = true;
-                InvokeRepeating("FireProjectile", 0f, secondsBetweenShots); // TODO switch to coroutines
+                float randomisedDelay = Random.Range(firingPeriodInSeconds - firingPeriodVariation, firingPeriodInSeconds + firingPeriodVariation);
+                InvokeRepeating("FireProjectile", 0f, firingPeriodInSeconds); // TODO switch to coroutines
             }
 
             if (distanceToPlayer > attackRadius)
