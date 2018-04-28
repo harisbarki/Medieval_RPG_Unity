@@ -12,12 +12,10 @@ namespace RPG.Characters
 {
     public class Player : MonoBehaviour, IDamageable
     {
-
-        [SerializeField] int enemyLayer = 9;
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float damagePerHit = 10f;
-        
-        [SerializeField] AnimatorOverrideController animatorOverrideController; 
+
+        [SerializeField] AnimatorOverrideController animatorOverrideController;
         [SerializeField] Weapon weaponInUse;
 
         Animator animator;
@@ -74,30 +72,23 @@ namespace RPG.Characters
         private void RegisterForMouseClick()
         {
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
 
-        // TODO refractor
-        void OnMouseClick(RaycastHit raycastHit, int layerHit)
+        void OnMouseOverEnemy(Enemy enemy)
         {
-            if (layerHit == enemyLayer)
+            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
-                var enemy = raycastHit.collider.gameObject;
-
-                if(IsTargetInRange(enemy))
-                {
-                    AttackTarget(enemy);
-                }
+                AttackTarget(enemy);
             }
         }
 
-        private void AttackTarget(GameObject target)
+        private void AttackTarget(Enemy enemy)
         {
-            var enemyComponent = target.GetComponent<Enemy>();
             if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
             {
                 animator.SetTrigger("Attack");
-                enemyComponent.TakeDamage(damagePerHit);
+                enemy.TakeDamage(damagePerHit);
                 lastHitTime = Time.time;
             }
         }
