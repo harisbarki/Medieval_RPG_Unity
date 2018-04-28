@@ -17,9 +17,10 @@ namespace RPG.Characters
             }
         }
 
-        public void Use()
+        public void Use(AbilityUseParams useParams)
         {
-            throw new System.NotImplementedException();
+            float damageToDeal = useParams.baseDamage + config.ExtraDamage;
+            useParams.target.TakeDamage(damageToDeal);
         }
 
         // Use this for initialization
