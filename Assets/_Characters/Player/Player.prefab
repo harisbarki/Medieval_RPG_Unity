@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9579096}
   - component: {fileID: 5426510}
   - component: {fileID: 13615390}
+  - component: {fileID: 82758203675380132}
   - component: {fileID: 11469404}
   - component: {fileID: 195367535995020892}
   - component: {fileID: 114272382486777280}
@@ -97,7 +98,7 @@ CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
-  m_Material: {fileID: 13400000, guid: 52baaeb214519f347a35cf0edfd262ff, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
@@ -703,6 +704,101 @@ Transform:
   m_Father: {fileID: 4940583674747420}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &82758203675380132
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &114188226302925350
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -714,8 +810,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e982ff127e897de42b828b78cdf9ce50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rawImage: {fileID: 0}
+  energyBar: {fileID: 0}
   maxEnergyPoints: 100
+  regenPointsPerSecond: 10
 --- !u!114 &114272382486777280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -749,12 +846,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9268856d129aa64a8ab4590ce181c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyLayer: 9
   maxHealthPoints: 1000
-  damagePerHit: 50
+  baseDamage: 10
   animatorOverrideController: {fileID: 22100000, guid: 3afd69205c6665147aabb74730908ea5,
     type: 2}
   weaponInUse: {fileID: 11400000, guid: 7ff024742ca50e84286f2a989d978746, type: 2}
+  damageSounds:
+  - {fileID: 8300000, guid: e6425f89141537444af6f92670930648, type: 3}
+  - {fileID: 8300000, guid: a32d97a2e7836654095082c99432fb1a, type: 3}
+  - {fileID: 8300000, guid: 5c11239953c53f64c9a178a96a13ee75, type: 3}
+  - {fileID: 8300000, guid: 490d9d513b227764d9b4b1ac37eedca2, type: 3}
+  - {fileID: 8300000, guid: 259edd0b8422ab843a2b8e8db34190fd, type: 3}
+  - {fileID: 8300000, guid: c19d6d8866a905841954c75c81146dbd, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: aa66e2008280bb4459f78acc77f4891b, type: 3}
+  - {fileID: 8300000, guid: fb41b0a932d743945ba08cece30894cf, type: 3}
+  - {fileID: 8300000, guid: ce74acae1b8432646860db9621263b01, type: 3}
+  abilities:
+  - {fileID: 11400000, guid: abe1cf4ce1918d34f99d48b7cd8fef94, type: 2}
 --- !u!114 &114978401065010746
 MonoBehaviour:
   m_ObjectHideFlags: 1

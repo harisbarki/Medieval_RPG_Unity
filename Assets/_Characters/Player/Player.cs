@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
 
 using RPG.Core;
@@ -17,21 +18,19 @@ namespace RPG.Characters
 
         [SerializeField] AnimatorOverrideController animatorOverrideController;
         [SerializeField] Weapon weaponInUse;
+        [SerializeField] AudioClip[] damageSounds;
+        [SerializeField] AudioClip[] deathSounds;
 
-        // Temporarilily serialied for dubbing
+        // Temporarilily serialized for dubbing
         [SerializeField] SpecialAbility[] abilities;
 
+        AudioSource audioSource;
         Animator animator;
         float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
         float lastHitTime = 0f;
 
         public float healthAsPercentage { get { return currentHealthPoints / maxHealthPoints; } }
-
-        public void TakeDamage(float damage)
-        {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-        }
 
         void Start()
         {
@@ -40,7 +39,39 @@ namespace RPG.Characters
             PutWeaponInHand();
             SetupAnimatorController();
             abilities[0].AttachComponentTo(gameObject);
+            audioSource = GetComponent<AudioSource>();
         }
+
+
+        public void TakeDamage(float damage)
+        {
+            ReduceHealth(damage);
+            audioSource.clip = damageSounds[UnityEngine.Random.Range(0, damageSounds.Length)];
+            audioSource.Play();
+            if (currentHealthPoints - damage <= 0)  // player dies
+            {
+                StartCoroutine(KillPlayer());   //  kill player
+            }
+        }
+
+        IEnumerator KillPlayer()
+        {
+            audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
+            audioSource.Play();
+
+            Debug.Log("Death animation");
+
+            yield return new WaitForSecondsRealtime(audioSource.clip.length);
+            var currentScene = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentScene);
+        }
+
+        private void ReduceHealth(float damage)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            // play sound
+        }
+
 
         private void SetCurrentMaxHealth()
         {
