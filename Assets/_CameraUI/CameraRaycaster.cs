@@ -42,7 +42,7 @@ namespace RPG.CameraUI
             if (RaycastForWalkable(ray)) { return; }
 
         }
-
+         
         bool RaycastForEnemy(Ray ray)
         {
             RaycastHit hitInfo;
