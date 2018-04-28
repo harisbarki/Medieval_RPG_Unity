@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using RPG.Core;
+using System;
 
 namespace RPG.Characters
 {
@@ -19,14 +20,35 @@ namespace RPG.Characters
             }
         }
 
+        // Use this for initialization
+        void Start()
+        {
+            print("Area attack behaviour attached to " + gameObject.name);
+        }
+
         public void Use(AbilityUseParams useParams)
         {
+            DealRadialDamage(useParams);
+            PlayParticleEffect();
+        }
+
+        private void PlayParticleEffect()
+        {
+            var prefab = Instantiate(config.ParticlePrefab, transform.position, Quaternion.identity);
+            // TODO deicde if particle system attaches to player
+            ParticleSystem myParticleSystem = prefab.GetComponent<ParticleSystem>();
+            myParticleSystem.Play();
+            Destroy(prefab, myParticleSystem.main.duration);
+        }
+
+        private void DealRadialDamage(AbilityUseParams useParams)
+        {
             RaycastHit[] hits = Physics.SphereCastAll(
-                transform.position,
-                config.Radius,
-                Vector3.up,
-                config.Radius
-            );
+                            transform.position,
+                            config.Radius,
+                            Vector3.up,
+                            config.Radius
+                        );
 
             foreach (RaycastHit hit in hits)
             {
@@ -39,10 +61,5 @@ namespace RPG.Characters
             }
         }
 
-        // Use this for initialization
-        void Start()
-        {
-            print("Area attack behaviour attached to " + gameObject.name);
-        }
     }
 }
