@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23b7d282797b91a4692c0c1a09d3c731, type: 3}
-  m_Name: Power Attack L2
+  m_Script: {fileID: 11500000, guid: 023d228a86943bf439f1d982e5656171, type: 3}
+  m_Name: Area Attack L1
   m_EditorClassIdentifier: 
-  energyCost: 20
-  extraDamage: 15
+  energyCost: 10
+  extraDamage: 10

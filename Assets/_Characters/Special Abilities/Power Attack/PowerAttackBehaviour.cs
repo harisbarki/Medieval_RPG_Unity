@@ -28,11 +28,5 @@ namespace RPG.Characters
         {
             print("Power attack behaviour attached to " + gameObject.name);
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }
