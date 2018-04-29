@@ -6,7 +6,6 @@ namespace RPG.Characters
 {
     public class SelfHealBehaviour : AbilityBehaviour
     {
-        SelfHealConfig config = null;
         Player player = null;
         AudioSource audioSource = null;
 
@@ -18,7 +17,7 @@ namespace RPG.Characters
 
 		public override void Use(AbilityUseParams useParams)
 		{
-            player.Heal(config.GetExtraHealth());
+            player.Heal((config as SelfHealConfig).GetExtraHealth());
             audioSource.clip = config.GetAudioClip(); // TODO find way of moving audio to parent class
             audioSource.Play();
             PlayParticleEffect();
