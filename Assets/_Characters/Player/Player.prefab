@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 9579096}
   - component: {fileID: 5426510}
   - component: {fileID: 13615390}
-  - component: {fileID: 11469404}
   - component: {fileID: 195367535995020892}
   - component: {fileID: 82071768402052042}
+  - component: {fileID: 11469404}
   - component: {fileID: 114272382486777280}
-  - component: {fileID: 114978401065010746}
   - component: {fileID: 114633348878164724}
   - component: {fileID: 114401487052103182}
   m_Layer: 11
@@ -2185,6 +2184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb75cb33cc6f884db40fe6cec105d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stoppingDistance: 1
 --- !u!114 &114401487052103182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2245,18 +2245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610f816287df94a478980beb4ea34d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114978401065010746
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!137 &137547843857790632
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
