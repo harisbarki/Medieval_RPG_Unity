@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 114272382486777280}
   - component: {fileID: 114633348878164724}
   - component: {fileID: 114401487052103182}
+  - component: {fileID: 114083390910060000}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -2153,6 +2154,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114083390910060000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e00ffaf106f364a919b5ae09bc0818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 100
+  healthBar: {fileID: 0}
+  damageSounds: []
+  deathSounds: []
+  deathVanishSeconds: 2
 --- !u!114 &114272382486777280
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2181,7 +2198,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 335a0c914fde040e68b13a253c2afdca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyOrb: {fileID: 0}
+  abilities:
+  - {fileID: 11400000, guid: 8ca914442b46540d1b48580b2599b2e4, type: 2}
+  - {fileID: 11400000, guid: 87b1244f6029d4a0f850297a5dfedd7a, type: 2}
+  - {fileID: 11400000, guid: 8f838734eb7a749009a3315fd6312191, type: 2}
+  energyBar: {fileID: 0}
   maxEnergyPoints: 1000
   regenPointsPerSecond: 3
 --- !u!114 &114633348878164724
@@ -2195,30 +2216,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9268856d129aa64a8ab4590ce181c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 600
   baseDamage: 10
   currentWeaponConfig: {fileID: 11400000, guid: 42b20c93823e4e345ab656322c4f0316,
     type: 2}
   animatorOverrideController: {fileID: 22100000, guid: e92f24f13a6764b40bb121d6a2e3d168,
     type: 2}
-  damageSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  deathSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   criticalHitChance: 0.1
   criticalHitMultiplier: 1.25
   criticalHitParticle: {fileID: 198757451732837772}
-  abilities:
-  - {fileID: 11400000, guid: 7d493ef7d1af04307941d084945693a9, type: 2}
-  - {fileID: 11400000, guid: 87b1244f6029d4a0f850297a5dfedd7a, type: 2}
-  - {fileID: 11400000, guid: 8f838734eb7a749009a3315fd6312191, type: 2}
 --- !u!114 &114932028709818798
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -13,7 +13,7 @@ namespace RPG.Characters
             characterHealth = GetComponent<HealthSystem>();
         }
 
-		public override void Use(AbilityUseParams useParams)
+		public override void Use()
 		{
             PlayAbilitySound();
             characterHealth.Heal((config as SelfHealConfig).GetExtraHealth());
