@@ -1,12 +1,13 @@
-﻿using System;
+﻿﻿﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
-using RPG.Core;
+// TODO consider re-wire...
 using RPG.CameraUI;
+using RPG.Core;
 using RPG.Weapons;
 
 namespace RPG.Characters
@@ -15,38 +16,37 @@ namespace RPG.Characters
     {
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float baseDamage = 10f;
-
-        [SerializeField] AnimatorOverrideController animatorOverrideController;
-        [SerializeField] Weapon weaponInUse;
+        [SerializeField] Weapon weaponInUse = null;
+        [SerializeField] AnimatorOverrideController animatorOverrideController = null;
         [SerializeField] AudioClip[] damageSounds;
         [SerializeField] AudioClip[] deathSounds;
-        [Range(0.1f, 1.0f)] [SerializeField] float criticalHitChance = 0.1f;
+        [Range(.1f, 1.0f)] [SerializeField] float criticalHitChance = 0.1f;
         [SerializeField] float criticalHitMultiplier = 1.25f;
+		[SerializeField] ParticleSystem criticalHitParticle = null;
 
-        // Temporarilily serialized for dubbing
+        // Temporarily serialized for dubbing
         [SerializeField] AbilityConfig[] abilities;
 
         const string DEATH_TRIGGER = "Death";
         const string ATTACK_TRIGGER = "Attack";
 
-        [SerializeField] ParticleSystem criticalHitParticle = null;
         Enemy enemy = null;
         AudioSource audioSource = null;
         Animator animator = null;
         float currentHealthPoints = 0;
         CameraRaycaster cameraRaycaster = null;
-        float lastHitTime = 0f;
+        float lastHitTime = 0;
 
         public float healthAsPercentage { get { return currentHealthPoints / maxHealthPoints; } }
 
         void Start()
         {
-            audioSource = GetComponent<AudioSource>();
+			audioSource = GetComponent<AudioSource>();
 
             RegisterForMouseClick();
             SetCurrentMaxHealth();
             PutWeaponInHand();
-            SetupAnimatorController();
+            SetupRuntimeAnimator();
             AttachInitialAbilities();
         }
 
@@ -60,7 +60,7 @@ namespace RPG.Characters
 
         void Update()
         {
-            if (currentHealthPoints > Mathf.Epsilon)
+            if (healthAsPercentage > Mathf.Epsilon)
             {
                 ScanForAbilityKeyDown();
             }
@@ -75,7 +75,17 @@ namespace RPG.Characters
                     AttemptSpecialAbility(keyIndex);
                 }
             }
+        }
 
+        public void TakeDamage(float damage)
+        {
+			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+			audioSource.clip = damageSounds[UnityEngine.Random.Range(0, damageSounds.Length)];
+			audioSource.Play();        
+            if (currentHealthPoints <= 0)
+            {
+                StartCoroutine(KillPlayer());
+            }
         }
 
         public void Heal(float points)
@@ -83,47 +93,34 @@ namespace RPG.Characters
             currentHealthPoints = Mathf.Clamp(currentHealthPoints + points, 0f, maxHealthPoints);
         }
 
-        public void TakeDamage(float damage)
-        {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-            audioSource.clip = damageSounds[UnityEngine.Random.Range(0, damageSounds.Length)];
-            audioSource.Play();
-            if (currentHealthPoints <= 0)  // player dies
-            {
-                StartCoroutine(KillPlayer());   //  kill player
-            }
-        }
-
         IEnumerator KillPlayer()
         {
-            animator.SetTrigger(DEATH_TRIGGER);
+			animator.SetTrigger(DEATH_TRIGGER);
 
             audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
-            audioSource.Play();
+			audioSource.Play();
             yield return new WaitForSecondsRealtime(audioSource.clip.length);
 
-            var currentScene = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentScene);
-        }
+            SceneManager.LoadScene(0);
+		}
 
         private void SetCurrentMaxHealth()
         {
             currentHealthPoints = maxHealthPoints;
         }
 
-        private void SetupAnimatorController()
+        private void SetupRuntimeAnimator()
         {
             animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = animatorOverrideController;
-            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimationClip();
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip(); // remove const
         }
 
         private void PutWeaponInHand()
         {
-            GameObject weaponPrefab = weaponInUse.GetWeaponPrefab();
+            var weaponPrefab = weaponInUse.GetWeaponPrefab();
             GameObject dominantHand = RequestDominantHand();
             var weapon = Instantiate(weaponPrefab, dominantHand.transform);
-
             weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
             weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
         }
@@ -131,21 +128,21 @@ namespace RPG.Characters
         private GameObject RequestDominantHand()
         {
             var dominantHands = GetComponentsInChildren<DominantHand>();
-            int numberOfDimanentHands = dominantHands.Length;
-            Assert.IsFalse(numberOfDimanentHands <= 0, "No DominantHand found on Player, please add one");
-            Assert.IsFalse(numberOfDimanentHands > 1, "Multiple DominantHand scripts on Player, please remove one");
+            int numberOfDominantHands = dominantHands.Length;
+            Assert.IsFalse(numberOfDominantHands <= 0, "No DominantHand found on Player, please add one");
+            Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on Player, please remove one");
             return dominantHands[0].gameObject;
         }
 
         private void RegisterForMouseClick()
         {
-            cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+            cameraRaycaster = FindObjectOfType<CameraUI.CameraRaycaster>();
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
 
         void OnMouseOverEnemy(Enemy enemyToSet)
         {
-            enemy = enemyToSet;
+            this.enemy = enemyToSet;
             if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
                 AttackTarget();
@@ -159,7 +156,8 @@ namespace RPG.Characters
         private void AttemptSpecialAbility(int abilityIndex)
         {
             var energyComponent = GetComponent<Energy>();
-            var energyCost = abilities[abilityIndex].EnergyCost;
+            var energyCost = abilities[abilityIndex].GetEnergyCost();
+
             if (energyComponent.IsEnergyAvailable(energyCost))
             {
                 energyComponent.ConsumeEnergy(energyCost);
@@ -173,6 +171,7 @@ namespace RPG.Characters
             if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
             {
                 animator.SetTrigger(ATTACK_TRIGGER);
+                print(weaponInUse.GetAdditionalDamage());
                 enemy.TakeDamage(CalculateDamage());
                 lastHitTime = Time.time;
             }
@@ -180,22 +179,23 @@ namespace RPG.Characters
 
         private float CalculateDamage()
         {
-            var isCriticalHit = UnityEngine.Random.Range(0, 1f) <= criticalHitChance;
-            float damageBeforeCritical = baseDamage + weaponInUse.AdditionalDamage;
+            bool isCriticalHit = UnityEngine.Random.Range(0f, 1f) <= criticalHitChance;
+            float damageBeforeCritical = baseDamage + weaponInUse.GetAdditionalDamage();
             if (isCriticalHit)
             {
                 criticalHitParticle.Play();
                 return damageBeforeCritical * criticalHitMultiplier;
             }
-            return damageBeforeCritical;
+            else
+            {
+                return damageBeforeCritical;
+            }
         }
 
         private bool IsTargetInRange(GameObject target)
         {
-            // Check enemy is in range
             float distanceToTarget = (target.transform.position - transform.position).magnitude;
             return distanceToTarget <= weaponInUse.GetMaxAttackRange();
         }
-
     }
 }

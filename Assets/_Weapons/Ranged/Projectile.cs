@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO consider re-wire
 using RPG.Core;
 
 namespace RPG.Weapons
 {
     public class Projectile : MonoBehaviour
     {
-
         [SerializeField] float projectileSpeed;
-        GameObject shooter;
-        float damageCaused;
-        const float DESTORY_DELAY = 0.01f;
+        [SerializeField] GameObject shooter; // So can inspected when paused
 
-        public float GetDefaultLaunchSpeed()
+        const float DESTROY_DELAY = 0.01f;
+        float damageCaused;
+
+        public void SetShooter(GameObject shooter)
         {
-            return projectileSpeed;
+            this.shooter = shooter;
         }
 
         public void SetDamage(float damage)
@@ -24,27 +25,28 @@ namespace RPG.Weapons
             damageCaused = damage;
         }
 
-        public void SetShooter(GameObject shooter)
+        public float GetDefaultLaunchSpeed()
         {
-            this.shooter = shooter;
+            return projectileSpeed;
         }
 
         void OnCollisionEnter(Collision collision)
         {
-            if (shooter && collision.gameObject.layer != shooter.layer)
+            var layerCollidedWith = collision.gameObject.layer;
+            if (shooter && layerCollidedWith != shooter.layer)
             {
-                DamageIfDamageables(collision);
+                DamageIfDamageable(collision);
             }
         }
 
-        private void DamageIfDamageables(Collision collision)
+        private void DamageIfDamageable(Collision collision)
         {
             Component damagableComponent = collision.gameObject.GetComponent(typeof(IDamageable));
             if (damagableComponent)
             {
                 (damagableComponent as IDamageable).TakeDamage(damageCaused);
             }
-            Destroy(gameObject, DESTORY_DELAY);
+            Destroy(gameObject, DESTROY_DELAY);
         }
     }
 }

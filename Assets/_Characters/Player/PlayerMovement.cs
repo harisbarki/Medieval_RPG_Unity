@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-
-using RPG.CameraUI;
+using RPG.CameraUI; // TODO consider re-wiring
 
 namespace RPG.Characters
 {
@@ -12,13 +11,14 @@ namespace RPG.Characters
     public class PlayerMovement : MonoBehaviour
     {
         ThirdPersonCharacter thirdPersonCharacter = null;   // A reference to the ThirdPersonCharacter on the object
-        CameraRaycaster cameraRaycaster = null;
+        CameraUI.CameraRaycaster cameraRaycaster = null;
+        Vector3 clickPoint;
         AICharacterControl aiCharacterControl = null;
         GameObject walkTarget = null;
 
         void Start()
         {
-            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
+            cameraRaycaster = Camera.main.GetComponent<CameraUI.CameraRaycaster>();
             thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
             aiCharacterControl = GetComponent<AICharacterControl>();
             walkTarget = new GameObject("walkTarget");
@@ -27,21 +27,20 @@ namespace RPG.Characters
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
 
-        void OnMouseOverEnemy(Enemy enemy)
+        void OnMouseOverPotentiallyWalkable(Vector3 destination)
         {
             if (Input.GetMouseButton(0))
             {
-                aiCharacterControl.SetTarget(enemy.transform);
-                return;
-            }
+				walkTarget.transform.position = destination;
+				aiCharacterControl.SetTarget(walkTarget.transform);  
+            }    
         }
 
-        void OnMouseOverPotentiallyWalkable(Vector3 destination)
+        void OnMouseOverEnemy(Enemy enemy)
         {
-            if(Input.GetMouseButton(0) || Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(1))
             {
-                walkTarget.transform.position = destination;
-                aiCharacterControl.SetTarget(walkTarget.transform);
+                aiCharacterControl.SetTarget(enemy.transform);
             }
         }
 

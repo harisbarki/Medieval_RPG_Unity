@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using RPG.Core;
 
 namespace RPG.Characters
@@ -20,44 +19,38 @@ namespace RPG.Characters
 
     public abstract class AbilityConfig : ScriptableObject
     {
-        [Header("Special Ability General")]
+        [Header("Spcial Ability General")]
         [SerializeField] float energyCost = 10f;
         [SerializeField] GameObject particlePrefab = null;
         [SerializeField] AudioClip audioClip = null;
 
         protected ISpecialAbility behaviour;
 
-        abstract public void AttachComponentTo(GameObject gameObjectToAttachTo);
+        abstract public void AttachComponentTo(GameObject gameObjectToattachTo);
 
-        public float EnergyCost
+        public void Use(AbilityUseParams useParams)
         {
-            get
-            {
-                return energyCost;
-            }
+            behaviour.Use(useParams);
         }
 
-        public GameObject ParticlePrefab
+        public float GetEnergyCost()
         {
-            get
-            {
-                return particlePrefab;
-            }
+            return energyCost;
+        }
+
+        public GameObject GetParticlePrefab()
+        {
+            return particlePrefab;
         }
 
         public AudioClip GetAudioClip()
         {
             return audioClip;
         }
-
-        public void Use(AbilityUseParams abilityUseParams)
-        {
-            behaviour.Use(abilityUseParams); 
-        }
     }
 
-    public interface ISpecialAbility
-    {
-        void Use(AbilityUseParams useParams);
-    }
+	public interface ISpecialAbility
+	{
+		void Use(AbilityUseParams useParams);
+	}
 }

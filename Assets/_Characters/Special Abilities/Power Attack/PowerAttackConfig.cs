@@ -1,28 +1,25 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPG.Characters
 {
-    [CreateAssetMenu(menuName = ("RPG/Special Ability/Power Attack"))]
+    [CreateAssetMenu(menuName = ("RPG/Special Abiltiy/Power Attack"))]
     public class PowerAttackConfig : AbilityConfig
     {
         [Header("Power Attack Specific")]
         [SerializeField] float extraDamage = 10f;
 
-        public float ExtraDamage
+        public override void AttachComponentTo(GameObject gameObjectToattachTo)
         {
-            get
-            {
-                return extraDamage;
-            }
+            var behviourComponent = gameObjectToattachTo.AddComponent<PowerAttackBehaviour>();
+            behviourComponent.SetConfig(this);
+            behaviour = behviourComponent;
         }
 
-        public override void AttachComponentTo(GameObject gameObjectToAttachTo)
+        public float GetExtraDamage()
         {
-            var behaviourComponent = gameObjectToAttachTo.AddComponent<PowerAttackBehaviour>();
-            behaviourComponent.Config = this;
-            behaviour = behaviourComponent;
+            return extraDamage;
         }
     }
 }

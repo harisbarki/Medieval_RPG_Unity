@@ -8,17 +8,17 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1787350691949154}
-  m_IsPrefabAsset: 1
---- !u!1 &1787350691949154
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1246042005740542}
+  m_IsPrefabParent: 1
+--- !u!1 &1246042005740542
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
+  serializedVersion: 5
   m_Component:
-  - component: {fileID: 4317023291429950}
+  - component: {fileID: 4219815134937942}
   m_Layer: 0
   m_Name: Hoe Grip
   m_TagString: Untagged
@@ -26,16 +26,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4317023291429950
+--- !u!4 &4219815134937942
 Transform:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1787350691949154}
-  m_LocalRotation: {x: -0.6053712, y: -0.08109505, z: -0.7857475, w: 0.09772482}
-  m_LocalPosition: {x: -0.25, y: 0.715, z: -0.012}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_GameObject: {fileID: 1246042005740542}
+  m_LocalRotation: {x: -0.42576334, y: -0.48830512, z: 0.62348884, w: 0.43765908}
+  m_LocalPosition: {x: 0.174, y: 0.069, z: 0.25}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -14.227, y: 74.815, z: -176.72401}
+  m_LocalEulerAnglesHint: {x: -193.664, y: -260.489, z: -81.715}

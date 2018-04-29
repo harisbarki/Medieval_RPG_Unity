@@ -26,9 +26,7 @@ namespace RPG.Characters
         private void Update()
         {
             if (target != null)
-            {
                 agent.SetDestination(target.position);
-            }
 
             if (agent.remainingDistance > agent.stoppingDistance)
             {

@@ -6,5 +6,6 @@ namespace RPG.Characters
     {
 
         // Add to dominant hand on character prefab
+
     }
 }
