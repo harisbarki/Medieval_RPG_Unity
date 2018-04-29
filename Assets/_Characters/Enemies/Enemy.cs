@@ -7,7 +7,7 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-    public class Enemy : MonoBehaviour, IDamageable
+    public class Enemy : MonoBehaviour
     {
 
         [SerializeField] float chaseRadius = 6f;
@@ -75,11 +75,6 @@ namespace RPG.Characters
             // Draw chase sphere 
             Gizmos.color = new Color(0, 0, 255, .5f);
             Gizmos.DrawWireSphere(transform.position, chaseRadius);
-        }
-
-        public void TakeDamage(float damage)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

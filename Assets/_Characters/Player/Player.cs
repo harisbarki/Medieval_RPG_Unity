@@ -94,14 +94,14 @@ namespace RPG.Characters
 
         void OnMouseOverEnemy(Enemy enemyToSet)
         {
-            this.enemy = enemyToSet;
+            enemy = enemyToSet;
             if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
                 AttackTarget();
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                abilities.AttemptSpecialAbility(0);
+                abilities.AttemptSpecialAbility(0, enemy.gameObject);
             }
         }
 
@@ -112,7 +112,7 @@ namespace RPG.Characters
                 SetAttackAnimation();
                 animator.SetTrigger(ATTACK_TRIGGER);
                 print(currentWeaponConfig.GetAdditionalDamage());
-                enemy.TakeDamage(CalculateDamage());
+                enemy.GetComponent<HealthSystem>().TakeDamage(CalculateDamage());
                 lastHitTime = Time.time;
             }
         }
