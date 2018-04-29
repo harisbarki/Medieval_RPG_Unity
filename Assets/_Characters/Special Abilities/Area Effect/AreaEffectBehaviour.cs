@@ -1,26 +1,16 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Characters;
 using RPG.Core;
-using System;
 
 public class AreaEffectBehaviour : AbilityBehaviour
 {
-
-	AudioSource audioSource = null;
-
-    void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
-
     public override void Use(AbilityUseParams useParams)
     {
+        PlayAbilitySound();
         DealRadialDamage(useParams);
         PlayParticleEffect();
-		audioSource.clip = config.GetAudioClip();
-		audioSource.Play();
     }
 
     private void DealRadialDamage(AbilityUseParams useParams)
