@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace RPG.Characters
 {
-    public class PowerAttackBehaviour : MonoBehaviour, ISpecialAbility
+    public class SelfHealBehaviour : MonoBehaviour, ISpecialAbility
     {
 
-        PowerAttackConfig config;
+        SelfHealConfig config;
+        Player player;
 
-        public PowerAttackConfig Config
+        public SelfHealConfig Config
         {
             set
             {
@@ -20,7 +21,7 @@ namespace RPG.Characters
         // Use this for initialization
         void Start()
         {
-            print("Power attack behaviour attached to " + gameObject.name);
+            player = GetComponent<Player>();
         }
 
         public void Use(AbilityUseParams useParams)
@@ -31,8 +32,7 @@ namespace RPG.Characters
 
         private void DealDamage(AbilityUseParams useParams)
         {
-            float damageToDeal = useParams.baseDamage + config.ExtraDamage;
-            useParams.target.AdjustHealth(damageToDeal);
+            player.AdjustHealth(-config.ExtraHealth);
         }
 
         private void PlayParticleEffect()

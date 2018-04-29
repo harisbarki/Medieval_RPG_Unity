@@ -84,8 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
+  m_MovingTurnSpeed: 1000
+  m_StationaryTurnSpeed: 800
   m_JumpPower: 6
   m_GravityMultiplier: 2
   m_RunCycleLegOffset: 0.2
@@ -863,8 +863,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fb41b0a932d743945ba08cece30894cf, type: 3}
   - {fileID: 8300000, guid: ce74acae1b8432646860db9621263b01, type: 3}
   abilities:
-  - {fileID: 11400000, guid: 7abbeaee91008de4eae88cdffa73e6c9, type: 2}
+  - {fileID: 11400000, guid: 69bcd85998482664d8cf97d82fe65363, type: 2}
   - {fileID: 11400000, guid: abe1cf4ce1918d34f99d48b7cd8fef94, type: 2}
+  - {fileID: 11400000, guid: 7abbeaee91008de4eae88cdffa73e6c9, type: 2}
 --- !u!114 &114978401065010746
 MonoBehaviour:
   m_ObjectHideFlags: 1

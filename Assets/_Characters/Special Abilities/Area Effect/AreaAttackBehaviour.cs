@@ -20,12 +20,6 @@ namespace RPG.Characters
             }
         }
 
-        // Use this for initialization
-        void Start()
-        {
-            print("Area attack behaviour attached to " + gameObject.name);
-        }
-
         public void Use(AbilityUseParams useParams)
         {
             DealRadialDamage(useParams);
@@ -53,10 +47,11 @@ namespace RPG.Characters
             foreach (RaycastHit hit in hits)
             {
                 var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
-                if (damageable != null)
+                bool hitPlayer = hit.collider.gameObject.GetComponent<Player>();
+                if (damageable != null && !hitPlayer)
                 {
                     float damageToDeal = useParams.baseDamage + config.DamageToEachTarget;
-                    damageable.TakeDamage(damageToDeal);
+                    damageable.AdjustHealth(damageToDeal);
                 }
             }
         }
