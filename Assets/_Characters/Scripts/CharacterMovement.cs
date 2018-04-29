@@ -92,6 +92,11 @@ namespace RPG.Characters
             UpdateAnimator();
         }
 
+        public void Kill()
+        {
+            // TODO
+        }
+
         private void SetForwardAndTurn(Vector3 move)
         {
             // convert the world relative moveInput vector into a local-relative

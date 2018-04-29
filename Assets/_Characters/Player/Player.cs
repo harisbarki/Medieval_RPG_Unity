@@ -11,43 +11,30 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-    public class Player : MonoBehaviour, IDamageable
+    public class Player : MonoBehaviour
     {
-        [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float baseDamage = 10f;
         [SerializeField] Weapon currentWeaponConfig = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
-        [SerializeField] AudioClip[] damageSounds;
-        [SerializeField] AudioClip[] deathSounds;
         [Range(.1f, 1.0f)] [SerializeField] float criticalHitChance = 0.1f;
         [SerializeField] float criticalHitMultiplier = 1.25f;
 		[SerializeField] ParticleSystem criticalHitParticle = null;
-
-        // Temporarily serialized for dubbing
-        [SerializeField] AbilityConfig[] abilities;
-
-        const string DEATH_TRIGGER = "Death";
+        
         const string ATTACK_TRIGGER = "Attack";
         private const string DEFAULT_ATTACK = "DEFAULT ATTACK";
         Enemy enemy = null;
-        AudioSource audioSource = null;
         Animator animator = null;
-        float currentHealthPoints = 0;
+        SpecialAbilities abilities = null;
         CameraRaycaster cameraRaycaster = null;
         float lastHitTime = 0;
         GameObject weaponObject;
 
-        public float healthAsPercentage { get { return currentHealthPoints / maxHealthPoints; } }
-
         void Start()
         {
-			audioSource = GetComponent<AudioSource>();
-
+            abilities = GetComponent<SpecialAbilities>();
             RegisterForMouseClick();
-            SetCurrentMaxHealth();
             PutWeaponInHand(currentWeaponConfig);
             SetAttackAnimation();
-            AttachInitialAbilities();
         }
 
         public void PutWeaponInHand(Weapon weaponToUse)
@@ -61,16 +48,10 @@ namespace RPG.Characters
             weaponObject.transform.localRotation = currentWeaponConfig.gripTransform.localRotation;
         }
 
-        private void AttachInitialAbilities()
-        {
-            for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
-            {
-                abilities[abilityIndex].AttachAbilityTo(gameObject);
-            }
-        }
-
+        
         void Update()
         {
+            var healthAsPercentage = GetComponent<HealthSystem>().healthAsPercentage;
             if (healthAsPercentage > Mathf.Epsilon)
             {
                 ScanForAbilityKeyDown();
@@ -79,46 +60,15 @@ namespace RPG.Characters
 
         private void ScanForAbilityKeyDown()
         {
-            for (int keyIndex = 1; keyIndex < abilities.Length; keyIndex++)
+            for (int keyIndex = 1; keyIndex < abilities.GetNumberOfAbilities(); keyIndex++)
             {
                 if (Input.GetKeyDown(keyIndex.ToString()))
                 {
-                    AttemptSpecialAbility(keyIndex);
+                    abilities.AttemptSpecialAbility(keyIndex);
                 }
             }
         }
 
-        public void TakeDamage(float damage)
-        {
-			currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-			audioSource.clip = damageSounds[UnityEngine.Random.Range(0, damageSounds.Length)];
-			audioSource.Play();        
-            if (currentHealthPoints <= 0)
-            {
-                StartCoroutine(KillPlayer());
-            }
-        }
-
-        public void Heal(float points)
-        {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints + points, 0f, maxHealthPoints);
-        }
-
-        IEnumerator KillPlayer()
-        {
-			animator.SetTrigger(DEATH_TRIGGER);
-
-            audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
-			audioSource.Play();
-            yield return new WaitForSecondsRealtime(audioSource.clip.length);
-
-            SceneManager.LoadScene(0);
-		}
-
-        private void SetCurrentMaxHealth()
-        {
-            currentHealthPoints = maxHealthPoints;
-        }
 
         private void SetAttackAnimation()
         {
@@ -151,20 +101,7 @@ namespace RPG.Characters
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                AttemptSpecialAbility(0);
-            }
-        }
-
-        private void AttemptSpecialAbility(int abilityIndex)
-        {
-            var energyComponent = GetComponent<Energy>();
-            var energyCost = abilities[abilityIndex].GetEnergyCost();
-
-            if (energyComponent.IsEnergyAvailable(energyCost))
-            {
-                energyComponent.ConsumeEnergy(energyCost);
-                var abilityParams = new AbilityUseParams(enemy, baseDamage);
-                abilities[abilityIndex].Use(abilityParams);
+                abilities.AttemptSpecialAbility(0);
             }
         }
 
