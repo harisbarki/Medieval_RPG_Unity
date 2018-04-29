@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198184831042773912}
   - component: {fileID: 199832378770483244}
   m_Layer: 12
-  m_Name: Power Attack L1 Particles
+  m_Name: Self Heal L1 Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

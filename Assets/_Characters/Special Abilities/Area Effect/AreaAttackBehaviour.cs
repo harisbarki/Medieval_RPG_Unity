@@ -28,7 +28,8 @@ namespace RPG.Characters
 
         private void PlayParticleEffect()
         {
-            var prefab = Instantiate(config.ParticlePrefab, transform.position, Quaternion.identity);
+            var particlePrefab = config.ParticlePrefab;
+            var prefab = Instantiate(particlePrefab, transform.position, particlePrefab.transform.rotation);
             // TODO deicde if particle system attaches to player
             ParticleSystem myParticleSystem = prefab.GetComponent<ParticleSystem>();
             myParticleSystem.Play();
@@ -51,7 +52,7 @@ namespace RPG.Characters
                 if (damageable != null && !hitPlayer)
                 {
                     float damageToDeal = useParams.baseDamage + config.DamageToEachTarget;
-                    damageable.AdjustHealth(damageToDeal);
+                    damageable.TakeDamage(damageToDeal);
                 }
             }
         }

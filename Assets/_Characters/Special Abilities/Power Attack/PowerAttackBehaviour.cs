@@ -32,12 +32,13 @@ namespace RPG.Characters
         private void DealDamage(AbilityUseParams useParams)
         {
             float damageToDeal = useParams.baseDamage + config.ExtraDamage;
-            useParams.target.AdjustHealth(damageToDeal);
+            useParams.target.TakeDamage(damageToDeal);
         }
 
         private void PlayParticleEffect()
         {
-            var prefab = Instantiate(config.ParticlePrefab, transform.position, Quaternion.identity);
+            var particlePrefab = config.ParticlePrefab;
+            var prefab = Instantiate(particlePrefab, transform.position, particlePrefab.transform.rotation);
             // TODO deicde if particle system attaches to player
             ParticleSystem myParticleSystem = prefab.GetComponent<ParticleSystem>();
             myParticleSystem.Play();
