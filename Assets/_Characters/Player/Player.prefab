@@ -2212,7 +2212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealthPoints: 600
   baseDamage: 10
-  weaponInUse: {fileID: 11400000, guid: 42b20c93823e4e345ab656322c4f0316, type: 2}
+  currentWeaponConfig: {fileID: 11400000, guid: 42b20c93823e4e345ab656322c4f0316,
+    type: 2}
   animatorOverrideController: {fileID: 22100000, guid: e92f24f13a6764b40bb121d6a2e3d168,
     type: 2}
   damageSounds:

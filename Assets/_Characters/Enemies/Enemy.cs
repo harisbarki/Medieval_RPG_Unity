@@ -4,7 +4,6 @@ using UnityEngine;
 
 // TODO consider re-wire
 using RPG.Core;
-using RPG.Weapons;
 
 namespace RPG.Characters
 {
