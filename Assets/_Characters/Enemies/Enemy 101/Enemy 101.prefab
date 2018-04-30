@@ -325,7 +325,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4479343662665844}
-  - component: {fileID: 114832034029799862}
   m_Layer: 10
   m_Name: Hand_L
   m_TagString: Untagged
@@ -614,6 +613,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4760212586935596}
+  - component: {fileID: 114227079568856524}
   m_Layer: 10
   m_Name: Hand_R
   m_TagString: Untagged
@@ -886,14 +886,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1219813068509398}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.12, y: 2.4, z: 19.81}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000020861623}
+  m_LocalPosition: {x: 15.120002, y: 2.4, z: 19.73503}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4405534613340088}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 179.99998, z: 0}
 --- !u!4 &4015360562146888
 Transform:
   m_ObjectHideFlags: 1
@@ -1901,6 +1901,17 @@ MonoBehaviour:
   baseDamage: 10
   currentWeaponConfig: {fileID: 11400000, guid: 42b20c93823e4e345ab656322c4f0316,
     type: 2}
+--- !u!114 &114227079568856524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1605207295534864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 610f816287df94a478980beb4ea34d2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114582034090603342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1927,17 +1938,6 @@ MonoBehaviour:
   moveThreshold: 1
   navMeshAgentStoppingDistance: 1.3
   navMeshAgentSteeringSpeed: 1
---- !u!114 &114832034029799862
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1333115556803242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 610f816287df94a478980beb4ea34d2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!137 &137968736680194032
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
