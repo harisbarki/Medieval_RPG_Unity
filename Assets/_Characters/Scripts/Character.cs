@@ -36,12 +36,16 @@ namespace RPG.Characters
 
         Rigidbody rigidBody;
         Animator animator;
-        Vector3 clickPoint;
-        GameObject walkTarget;
         NavMeshAgent navMeshAgent;
         float origGroundCheckDistance;
         float turnAmount;
         float forwardAmount;
+        bool isAlive = true;
+
+        public AnimatorOverrideController GetAnimatorOverrideController()
+        {
+                return animatorOverrideController;
+        }
 
         void Awake()
         {
@@ -79,19 +83,9 @@ namespace RPG.Characters
             rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
-        void Start()
-        {
-            CameraRaycaster cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-
-            walkTarget = new GameObject("walkTarget");
-
-            cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
-            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
-        }
-
         void Update()
         {
-            if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance)
+            if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance && isAlive)
             {
                 Move(navMeshAgent.desiredVelocity);
             }
@@ -101,20 +95,14 @@ namespace RPG.Characters
             }
         }
 
-        void OnMouseOverPotentiallyWalkable(Vector3 destination)
+        public void Kill()
         {
-            if (Input.GetMouseButton(0))
-            {
-                navMeshAgent.SetDestination(destination);
-            }    
+            isAlive = false;
         }
 
-        void OnMouseOverEnemy(Enemy enemy)
+        public void SetDestination(Vector3 worldPosition)
         {
-            if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(1))
-            {
-                navMeshAgent.SetDestination(enemy.transform.position);
-            }
+            navMeshAgent.destination = worldPosition;
         }
 
         void OnAnimatorMove()
@@ -129,17 +117,13 @@ namespace RPG.Characters
             }
         }
 
-        public void Move(Vector3 move)
+        void Move(Vector3 move)
         {
             SetForwardAndTurn(move);
             ApplyExtraTurnRotation();
             UpdateAnimator();
         }
 
-        public void Kill()
-        {
-            // TODO
-        }
 
         private void SetForwardAndTurn(Vector3 move)
         {
