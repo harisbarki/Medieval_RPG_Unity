@@ -20,7 +20,6 @@ namespace RPG.Characters
         const string ATTACK_TRIGGER = "Attack";
         const string DEFAULT_ATTACK = "DEFAULT ATTACK";
 
-        // Use this for initialization
         void Start()
         {
             animator = GetComponent<Animator>();
@@ -30,11 +29,33 @@ namespace RPG.Characters
             SetAttackAnimation();
         }
 
-        // Update is called once per frame
         void Update()
         {
             // todo check continuously if we should still be attacking
+            bool targetIsDead;
+            bool targetIsOutOfRange;
 
+            if (target == null) 
+            {
+                targetIsDead = false;
+                targetIsOutOfRange = false;
+            }
+            else
+            {
+                var targetHealth = target.GetComponent<HealthSystem>().healthAsPercentage;
+                targetIsDead = targetHealth <= Mathf.Epsilon;
+
+                var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+                targetIsOutOfRange = distanceToTarget > currentWeaponConfig.GetMaxAttackRange();
+            }
+
+            float characterHealth = GetComponent<HealthSystem>().healthAsPercentage;
+            bool characterIsDead = characterHealth <= Mathf.Epsilon;
+
+            if(characterIsDead || targetIsDead || targetIsOutOfRange)
+            {
+                StopAllCoroutines();
+            }
         }
 
         public void PutWeaponInHand(WeaponConfig weaponToUse)

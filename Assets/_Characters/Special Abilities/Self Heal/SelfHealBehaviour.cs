@@ -18,6 +18,7 @@ namespace RPG.Characters
             PlayAbilitySound();
             characterHealth.Heal((config as SelfHealConfig).GetExtraHealth());
             PlayParticleEffect();
-		}
+            PlayAbilityAnimation();
+        }
     }
 }
