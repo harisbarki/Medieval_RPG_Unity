@@ -1,25 +1,14 @@
-﻿using System;
+﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-using RPG.CameraUI;
+using RPG.CameraUI; // for mouse events
 
 namespace RPG.Characters
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerControl : MonoBehaviour
     {
-
-        [SerializeField] AnimatorOverrideController animatorOverrideController;
-        [Range(.1f, 1.0f)] [SerializeField] float criticalHitChance = 0.1f;
-        [SerializeField] float criticalHitMultiplier = 1.25f;
-        [SerializeField] ParticleSystem criticalHitParticle;
-
         Character character;
-        EnemyAI enemy;
-        Animator animator;
         SpecialAbilities abilities;
-        CameraRaycaster cameraRaycaster;
         WeaponSystem weaponSystem;
 
         void Start()
@@ -48,7 +37,7 @@ namespace RPG.Characters
 
         void RegisterForMouseEvents()
         {
-            cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+            CameraRaycaster cameraRaycaster = FindObjectOfType<CameraRaycaster>();
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
             cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
         }
@@ -61,26 +50,56 @@ namespace RPG.Characters
             }
         }
 
-        void OnMouseOverEnemy(EnemyAI enemyToSet)
-        {
-            enemy = enemyToSet;
-            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
-            {
-                character.SetDestination(enemy.transform.position);
-                weaponSystem.AttackTarget(enemy.gameObject);
-            }
-            else if (Input.GetMouseButtonDown(1))
-            {
-                character.SetDestination(enemy.transform.position);
-                abilities.AttemptSpecialAbility(0, enemy.gameObject);
-            }
-        }
-
         bool IsTargetInRange(GameObject target)
         {
             float distanceToTarget = (target.transform.position - transform.position).magnitude;
             return distanceToTarget <= weaponSystem.GetCurrentWeapon().GetMaxAttackRange();
         }
 
+        void OnMouseOverEnemy(EnemyAI enemy)
+        {
+            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
+            {
+                character.SetDestination(enemy.transform.position);
+                weaponSystem.AttackTarget(enemy.gameObject);
+            }
+            else if (Input.GetMouseButton(0) && !IsTargetInRange(enemy.gameObject))
+            {
+                // move and attack enemy
+                StartCoroutine(MoveAndAttack(enemy.gameObject));
+            }
+            else if (Input.GetMouseButtonDown(1) && IsTargetInRange(enemy.gameObject))
+            {
+                character.SetDestination(enemy.transform.position);
+                abilities.AttemptSpecialAbility(0, enemy.gameObject);
+            }
+            else if (Input.GetMouseButtonDown(1) && !IsTargetInRange(enemy.gameObject))
+            {
+                // move and power attack
+                StartCoroutine(MoveAndPowerAttack(enemy.gameObject));
+
+            }
+        }
+
+        IEnumerator MoveToTarget(GameObject target)
+        {
+            character.SetDestination(target.transform.position);
+            while (!IsTargetInRange(target))
+            {
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        IEnumerator MoveAndAttack(GameObject target)
+        {
+            yield return StartCoroutine(MoveToTarget(target));
+            weaponSystem.AttackTarget(target);
+        }
+
+        IEnumerator MoveAndPowerAttack(GameObject target)
+        {
+            yield return StartCoroutine(MoveToTarget(target));
+            abilities.AttemptSpecialAbility(0, target);
+        }
     }
 }

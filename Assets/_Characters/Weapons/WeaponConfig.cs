@@ -15,11 +15,17 @@ namespace RPG.Characters
         [SerializeField] float minTimeBetweenHits = .5f;
         [SerializeField] float maxAttackRange = 2f;
         [SerializeField] float additionalDamage = 10f;
+        [SerializeField] float damageDelay = 0.5f;
 
         public float GetMinTimeBetweenHits()
         {
             // TODO consdier whether we take animation time into account
             return minTimeBetweenHits;
+        }
+
+        public float GetDamageDelay()
+        {
+            return damageDelay;
         }
 
         public float GetMaxAttackRange()

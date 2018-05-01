@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 using UnityEngine;
+using System;
 
 namespace RPG.Characters
 {
@@ -31,7 +32,6 @@ namespace RPG.Characters
 
         void Update()
         {
-            // todo check continuously if we should still be attacking
             bool targetIsDead;
             bool targetIsOutOfRange;
 
@@ -56,6 +56,11 @@ namespace RPG.Characters
             {
                 StopAllCoroutines();
             }
+        }
+
+        public void StopAttacking()
+        {
+            StopAllCoroutines(); 
         }
 
         public void PutWeaponInHand(WeaponConfig weaponToUse)
