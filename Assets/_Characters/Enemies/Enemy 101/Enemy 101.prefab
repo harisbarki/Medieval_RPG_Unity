@@ -190,6 +190,8 @@ GameObject:
   - component: {fileID: 4004345453101844}
   - component: {fileID: 114582034090603342}
   - component: {fileID: 114169307090397362}
+  - component: {fileID: 114560141428565642}
+  - component: {fileID: 114905965790807414}
   m_Layer: 10
   m_Name: Enemy 101
   m_TagString: Untagged
@@ -1912,6 +1914,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610f816287df94a478980beb4ea34d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114560141428565642
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219813068509398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac46da830b7bf0443b928b3e59950ae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseRadius: 6
+  patrolPath: {fileID: 0}
+  waypointTolerance: 2
 --- !u!114 &114582034090603342
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1938,6 +1954,24 @@ MonoBehaviour:
   moveThreshold: 1
   navMeshAgentStoppingDistance: 1.3
   navMeshAgentSteeringSpeed: 1
+--- !u!114 &114905965790807414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1219813068509398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e00ffaf106f364a919b5ae09bc0818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 100
+  healthBar: {fileID: 0}
+  damageSounds:
+  - {fileID: 8300000, guid: ce6a5898b24ca4d4a95d6cb0a5cdd7be, type: 3}
+  deathSounds:
+  - {fileID: 8300000, guid: 05830414ee39c488b98fcbaed6b3bc74, type: 3}
+  deathVanishSeconds: 2
 --- !u!137 &137968736680194032
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
