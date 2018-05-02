@@ -7,30 +7,28 @@ namespace RPG.Characters
     [CreateAssetMenu(menuName = ("RPG/Weapon"))]
     public class WeaponConfig : ScriptableObject
     {
-
         public Transform gripTransform;
 
         [SerializeField] GameObject weaponPrefab;
         [SerializeField] AnimationClip attackAnimation;
-        [SerializeField] float minTimeBetweenHits = .5f;
+        [SerializeField] float timeBetweenAnimationCycles = .5f;
         [SerializeField] float maxAttackRange = 2f;
         [SerializeField] float additionalDamage = 10f;
-        [SerializeField] float damageDelay = 0.5f;
+        [SerializeField] float damageDelay = .5f;
 
-        public float GetMinTimeBetweenHits()
+        public float GetTimeBetweenAnimationCycles()
         {
-            // TODO consdier whether we take animation time into account
-            return minTimeBetweenHits;
-        }
-
-        public float GetDamageDelay()
-        {
-            return damageDelay;
+            return timeBetweenAnimationCycles;
         }
 
         public float GetMaxAttackRange()
         {
             return maxAttackRange;
+        }
+
+        public float GetDamageDelay()
+        {
+            return damageDelay;
         }
 
         public GameObject GetWeaponPrefab()

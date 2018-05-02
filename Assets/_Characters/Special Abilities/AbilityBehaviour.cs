@@ -7,9 +7,9 @@ namespace RPG.Characters
     {
         protected AbilityConfig config;
 
-        const float PARTICLE_CLEAN_UP_DELAY = 20f;
         const string ATTACK_TRIGGER = "Attack";
         const string DEFAULT_ATTACK_STATE = "DEFAULT ATTACK";
+        const float PARTICLE_CLEAN_UP_DELAY = 20f;
 
         public abstract void Use(GameObject target = null);
 
@@ -25,14 +25,15 @@ namespace RPG.Characters
                 particlePrefab,
                 transform.position,
                 particlePrefab.transform.rotation
-                );
+            );
+            particleObject.transform.parent = transform; // set world space in prefab if required
             particleObject.GetComponent<ParticleSystem>().Play();
             StartCoroutine(DestroyParticleWhenFinished(particleObject));
         }
 
         IEnumerator DestroyParticleWhenFinished(GameObject particlePrefab)
         {
-            while(particlePrefab.GetComponent<ParticleSystem>().isPlaying)
+            while (particlePrefab.GetComponent<ParticleSystem>().isPlaying)
             {
                 yield return new WaitForSeconds(PARTICLE_CLEAN_UP_DELAY);
             }
@@ -51,8 +52,9 @@ namespace RPG.Characters
 
         protected void PlayAbilitySound()
         {
-            var abilitySound = config.GetRandomAudioClip();
-            GetComponent<AudioSource>().PlayOneShot(abilitySound);
+            var abilitySound = config.GetRandomAbilitySound();
+            var audioSource = GetComponent<AudioSource>();
+            audioSource.PlayOneShot(abilitySound);
         }
     }
 }

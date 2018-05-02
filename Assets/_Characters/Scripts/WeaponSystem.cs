@@ -1,14 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.Assertions;
 using UnityEngine;
-using System;
 
 namespace RPG.Characters
 {
     public class WeaponSystem : MonoBehaviour
     {
-
         [SerializeField] float baseDamage = 10f;
         [SerializeField] WeaponConfig currentWeaponConfig = null;
 
@@ -35,32 +32,29 @@ namespace RPG.Characters
             bool targetIsDead;
             bool targetIsOutOfRange;
 
-            if (target == null) 
+            if (target == null)
             {
                 targetIsDead = false;
                 targetIsOutOfRange = false;
             }
             else
             {
-                var targetHealth = target.GetComponent<HealthSystem>().healthAsPercentage;
-                targetIsDead = targetHealth <= Mathf.Epsilon;
+                // test if target is dead
+                var targethealth = target.GetComponent<HealthSystem>().healthAsPercentage;
+                targetIsDead = targethealth <= Mathf.Epsilon;
 
+                // test if target is out of range
                 var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
                 targetIsOutOfRange = distanceToTarget > currentWeaponConfig.GetMaxAttackRange();
             }
 
             float characterHealth = GetComponent<HealthSystem>().healthAsPercentage;
-            bool characterIsDead = characterHealth <= Mathf.Epsilon;
+            bool characterIsDead = (characterHealth <= Mathf.Epsilon);
 
-            if(characterIsDead || targetIsDead || targetIsOutOfRange)
+            if (characterIsDead || targetIsOutOfRange || targetIsDead)
             {
                 StopAllCoroutines();
             }
-        }
-
-        public void StopAttacking()
-        {
-            StopAllCoroutines(); 
         }
 
         public void PutWeaponInHand(WeaponConfig weaponToUse)
@@ -80,6 +74,11 @@ namespace RPG.Characters
             StartCoroutine(AttackTargetRepeatedly());
         }
 
+        public void StopAttacking()
+        {
+            animator.StopPlayback();
+            StopAllCoroutines();
+        }
 
         IEnumerator AttackTargetRepeatedly()
         {
@@ -89,8 +88,9 @@ namespace RPG.Characters
 
             while (attackerStillAlive && targetStillAlive)
             {
-                float weaponHitPeriod = currentWeaponConfig.GetMinTimeBetweenHits();
-                float timeToWait = weaponHitPeriod * character.GetAnimSpeedMultiplier();
+                var animationClip = currentWeaponConfig.GetAttackAnimClip();
+                float animationClipTime = animationClip.length / character.GetAnimSpeedMultiplier();
+                float timeToWait = animationClipTime + currentWeaponConfig.GetTimeBetweenAnimationCycles();
 
                 bool isTimeToHitAgain = Time.time - lastHitTime > timeToWait;
 
@@ -107,7 +107,7 @@ namespace RPG.Characters
         {
             transform.LookAt(target.transform);
             animator.SetTrigger(ATTACK_TRIGGER);
-            float damageDelay = 1.0f; // todo get from the weapon
+            float damageDelay = currentWeaponConfig.GetDamageDelay();
             SetAttackAnimation();
             StartCoroutine(DamageAfterDelay(damageDelay));
         }
@@ -123,7 +123,7 @@ namespace RPG.Characters
             return currentWeaponConfig;
         }
 
-        private void SetAttackAnimation()
+        void SetAttackAnimation()
         {
             if (!character.GetOverrideController())
             {
@@ -138,26 +138,16 @@ namespace RPG.Characters
             }
         }
 
-        private GameObject RequestDominantHand()
+        GameObject RequestDominantHand()
         {
             var dominantHands = GetComponentsInChildren<DominantHand>();
             int numberOfDominantHands = dominantHands.Length;
-            Assert.IsFalse(numberOfDominantHands <= 0, "No DominantHand found on Player, please add one");
-            Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on Player, please remove one");
+            Assert.IsFalse(numberOfDominantHands <= 0, "No DominantHand found on " + gameObject.name + ", please add one");
+            Assert.IsFalse(numberOfDominantHands > 1, "Multiple DominantHand scripts on " + gameObject.name + ", please remove one");
             return dominantHands[0].gameObject;
         }
 
-        private void AttackTarget()
-        {
-            if (Time.time - lastHitTime > currentWeaponConfig.GetMinTimeBetweenHits())
-            {
-                SetAttackAnimation();
-                animator.SetTrigger(ATTACK_TRIGGER);
-                lastHitTime = Time.time;
-            }
-        }
-
-        private float CalculateDamage()
+        float CalculateDamage()
         {
             return baseDamage + currentWeaponConfig.GetAdditionalDamage();
         }

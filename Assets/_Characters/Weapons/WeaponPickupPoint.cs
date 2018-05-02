@@ -2,30 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RPG.Characters;
 
 namespace RPG.Characters
 {
     [ExecuteInEditMode]
     public class WeaponPickupPoint : MonoBehaviour
     {
-
         [SerializeField] WeaponConfig weaponConfig;
-        [SerializeField] AudioClip pickupSFX;
+        [SerializeField] AudioClip pickUpSFX;
 
         AudioSource audioSource;
 
+        // Use this for initialization
         void Start()
         {
             audioSource = GetComponent<AudioSource>();
-        }
-
-        void Update()
-        {
-            if(!Application.isPlaying)
-            {
-                DestroyChildren();
-                InstantiateWeapon();
-            }
         }
 
         void DestroyChildren()
@@ -36,11 +28,14 @@ namespace RPG.Characters
             }
         }
 
-
-        private void OnTriggerEnter(Collider other)
+        // Update is called once per frame
+        void Update()
         {
-            audioSource.PlayOneShot(pickupSFX);
-            FindObjectOfType<PlayerControl>().GetComponent<WeaponSystem>().PutWeaponInHand(weaponConfig);
+            if (!Application.isPlaying)
+            {
+                DestroyChildren();
+                InstantiateWeapon();
+            }
         }
 
         void InstantiateWeapon()
@@ -48,6 +43,12 @@ namespace RPG.Characters
             var weapon = weaponConfig.GetWeaponPrefab();
             weapon.transform.position = Vector3.zero;
             Instantiate(weapon, gameObject.transform);
+        }
+
+        void OnTriggerEnter()
+        {
+            FindObjectOfType<PlayerControl>().GetComponent<WeaponSystem>().PutWeaponInHand(weaponConfig);
+            audioSource.PlayOneShot(pickUpSFX);
         }
     }
 }

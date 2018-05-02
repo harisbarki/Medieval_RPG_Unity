@@ -15,7 +15,7 @@ namespace RPG.Characters
             return objectToAttachTo.AddComponent<SelfHealBehaviour>();
         }
 
-        public float GetExtraHealth()
+		public float GetExtraHealth()
 		{
 			return extraHealth;
 		}

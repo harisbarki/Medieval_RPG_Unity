@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
@@ -9,9 +9,9 @@ namespace RPG.Characters
     {
         [Header("Spcial Ability General")]
         [SerializeField] float energyCost = 10f;
-        [SerializeField] GameObject particlePrefab = null;
+        [SerializeField] GameObject particlePrefab;
         [SerializeField] AnimationClip abilityAnimation;
-        [SerializeField] AudioClip[] audioClips = null;
+        [SerializeField] AudioClip[] audioClips;
 
         protected AbilityBehaviour behaviour;
 
@@ -39,14 +39,14 @@ namespace RPG.Characters
             return particlePrefab;
         }
 
-        public AudioClip GetRandomAudioClip()
-        {
-            return audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
-        }
-
         public AnimationClip GetAbilityAnimation()
         {
             return abilityAnimation;
+        }
+
+        public AudioClip GetRandomAbilitySound()
+        {
+            return audioClips[Random.Range(0, audioClips.Length)];
         }
     }
 }

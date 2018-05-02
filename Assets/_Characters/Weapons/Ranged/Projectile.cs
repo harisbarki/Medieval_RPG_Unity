@@ -38,15 +38,5 @@ namespace RPG.Characters
                //  DamageIfDamageable(collision);
             }
         }
-
-        //private void DamageIfDamageable(Collision collision)
-        //{
-        //    Component damagableComponent = collision.gameObject.GetComponent(typeof(IDamageable));
-        //    if (damagableComponent)
-        //    {
-        //        (damagableComponent as IDamageable).TakeDamage(damageCaused);
-        //    }
-        //    Destroy(gameObject, DESTROY_DELAY);
-        //}
     }
 }

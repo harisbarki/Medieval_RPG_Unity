@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Characters;
 using RPG.Core;
+using System;
 
-public class AreaEffectBehaviour : AbilityBehaviour
-{
+public class AreaEffectBehaviour : AbilityBehaviour {
+
     public override void Use(GameObject target)
     {
         PlayAbilitySound();

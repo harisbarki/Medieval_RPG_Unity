@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-
 using RPG.CameraUI; // for mouse events
 
 namespace RPG.Characters
@@ -14,14 +13,22 @@ namespace RPG.Characters
         void Start()
         {
             character = GetComponent<Character>();
-            weaponSystem = GetComponent<WeaponSystem>();
             abilities = GetComponent<SpecialAbilities>();
+            weaponSystem = GetComponent<WeaponSystem>();
+            
             RegisterForMouseEvents();
+        }
+
+        private void RegisterForMouseEvents()
+        {
+            var cameraRaycaster = FindObjectOfType<CameraRaycaster>();
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+            cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
         }
 
         void Update()
         {
-            ScanForAbilityKeyDown();
+             ScanForAbilityKeyDown();
         }
 
         void ScanForAbilityKeyDown()
@@ -35,17 +42,11 @@ namespace RPG.Characters
             }
         }
 
-        void RegisterForMouseEvents()
-        {
-            CameraRaycaster cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
-            cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
-        }
-
         void OnMouseOverPotentiallyWalkable(Vector3 destination)
         {
             if (Input.GetMouseButton(0))
             {
+                weaponSystem.StopAttacking();
                 character.SetDestination(destination);
             }
         }
@@ -60,24 +61,19 @@ namespace RPG.Characters
         {
             if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
-                character.SetDestination(enemy.transform.position);
                 weaponSystem.AttackTarget(enemy.gameObject);
             }
             else if (Input.GetMouseButton(0) && !IsTargetInRange(enemy.gameObject))
             {
-                // move and attack enemy
-                StartCoroutine(MoveAndAttack(enemy.gameObject));
+                StartCoroutine(MoveAndAttack(enemy));
             }
             else if (Input.GetMouseButtonDown(1) && IsTargetInRange(enemy.gameObject))
             {
-                character.SetDestination(enemy.transform.position);
                 abilities.AttemptSpecialAbility(0, enemy.gameObject);
             }
             else if (Input.GetMouseButtonDown(1) && !IsTargetInRange(enemy.gameObject))
             {
-                // move and power attack
-                StartCoroutine(MoveAndPowerAttack(enemy.gameObject));
-
+                StartCoroutine(MoveAndPowerAttack(enemy));
             }
         }
 
@@ -88,18 +84,19 @@ namespace RPG.Characters
             {
                 yield return new WaitForEndOfFrame();
             }
+            yield return new WaitForEndOfFrame();
         }
 
-        IEnumerator MoveAndAttack(GameObject target)
+        IEnumerator MoveAndAttack(EnemyAI enemy)
         {
-            yield return StartCoroutine(MoveToTarget(target));
-            weaponSystem.AttackTarget(target);
+            yield return StartCoroutine(MoveToTarget(enemy.gameObject));
+            weaponSystem.AttackTarget(enemy.gameObject);
         }
 
-        IEnumerator MoveAndPowerAttack(GameObject target)
+        IEnumerator MoveAndPowerAttack(EnemyAI enemy)
         {
-            yield return StartCoroutine(MoveToTarget(target));
-            abilities.AttemptSpecialAbility(0, target);
+            yield return StartCoroutine(MoveToTarget(enemy.gameObject));
+            abilities.AttemptSpecialAbility(0, enemy.gameObject);
         }
     }
 }

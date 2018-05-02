@@ -17,6 +17,7 @@ namespace RPG.Characters
 
         float energyAsPercent { get { return currentEnergyPoints / maxEnergyPoints; } }
 
+        // Use this for initialization
         void Start()
         {
             audioSource = GetComponent<AudioSource>();
@@ -35,29 +36,6 @@ namespace RPG.Characters
             }
         }
 
-        public int GetNumberOfAbilities()
-        {
-            return abilities.Length;
-        }
-
-        public void ConsumeEnergy(float amount)
-        {
-            float newEnergyPoints = currentEnergyPoints - amount;
-            currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
-            UpdateEnergyBar();
-        }
-
-        void AddEnergyPoints()
-        {
-            var pointsToAdd = regenPointsPerSecond * Time.deltaTime;
-            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints + pointsToAdd, 0, maxEnergyPoints);
-        }
-
-        void UpdateEnergyBar()
-        {
-            energyBar.fillAmount = energyAsPercent;
-        }
-
         void AttachInitialAbilities()
         {
             for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
@@ -73,13 +51,38 @@ namespace RPG.Characters
 
             if (energyCost <= currentEnergyPoints)
             {
-                energyComponent.ConsumeEnergy(energyCost);
-                // todo use energy
-                abilities[abilityIndex].Use(null);
+                ConsumeEnergy(energyCost);
+                abilities[abilityIndex].Use(target);
             }
             else
             {
                 audioSource.PlayOneShot(outOfEnergy);
+            }
+        }
+
+        public int GetNumberOfAbilities()
+        {
+            return abilities.Length;
+        }
+
+        private void AddEnergyPoints()
+        {
+            var pointsToAdd = regenPointsPerSecond * Time.deltaTime;
+            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints + pointsToAdd, 0, maxEnergyPoints);
+        }
+
+        public void ConsumeEnergy(float amount)
+        {
+            float newEnergyPoints = currentEnergyPoints - amount;
+            currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
+            UpdateEnergyBar();
+        }
+
+        private void UpdateEnergyBar()
+        {
+            if (energyBar)
+            {
+                energyBar.fillAmount = energyAsPercent;
             }
         }
     }
